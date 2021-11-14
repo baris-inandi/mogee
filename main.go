@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	tapeLen = 1000
+	tapeLen = 10000
 )
 
 var funcStore = make(map[string]string)
@@ -75,12 +75,14 @@ func evalExpr(code string) {
 
 				// i/o
 				case "📝":
-					fmt.Printf(string(tape[ptr]))
+					fmt.Print(string(tape[ptr]))
 				case "📖":
 					var bfIn byte
-					fmt.Printf("\n📖 ")
+					fmt.Print("\n📖 ")
 					fmt.Scanln(&bfIn)
 					tape[ptr] = bfIn
+				case "🧮":
+					fmt.Print(tape[ptr])
 
 				// shortcuts
 				case "🧿":
