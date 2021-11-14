@@ -138,6 +138,7 @@ ASCII        BINARY           SYMBOL
 ... 
 ```
 > Note that this table is very much incomplete and there are many more ascii characters, please refer to a complete ascii table.
+<br />
 You will likely refer to [one of these](https://www.ascii-code.com/) when printing letters. Just set a cell to the specific ascii value you want and print it.
 
 #### Hello World!
