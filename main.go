@@ -9,8 +9,12 @@ import (
 )
 
 const (
-	tapeLen = 32
+	tapeLen = 1000
 )
+
+var funcStore = make(map[string]string)
+var ptr uint = 0
+var tape = [tapeLen]byte{}
 
 func getCode(f string) string {
 	fileBytes, err := ioutil.ReadFile(f)
@@ -19,8 +23,6 @@ func getCode(f string) string {
 	}
 	return string(fileBytes)
 }
-
-var funcStore = make(map[string]string)
 
 func trackFunc(code string, index int) int {
 	code = code[index+4:]
@@ -31,7 +33,7 @@ func trackFunc(code string, index int) int {
 	return len([]rune(code))
 }
 
-func evalExpr(code string, ptr uint, tape [tapeLen]byte) ([tapeLen]byte, uint) {
+func evalExpr(code string) {
 	skipChars := 0
 	callState := false
 	for index, char := range code {
@@ -101,23 +103,24 @@ func evalExpr(code string, ptr uint, tape [tapeLen]byte) ([tapeLen]byte, uint) {
 				default:
 					if callState {
 						callState = false
-						tape, ptr = evalExpr(funcStore[char], ptr, tape)
+						evalExpr(funcStore[char])
 					}
 				}
 			}
 		}
 	}
-	return tape, ptr
 }
 
-func main() {
+func readFromFile() string {
 	args := os.Args[1:]
 	if len(args) == 0 {
 		fmt.Println("Emoji Language Interpreter")
 		fmt.Println("Usage: ./main <file>")
 		os.Exit(0)
 	}
-	code := getCode(args[0])
-	out, _ := evalExpr(code, 0, [tapeLen]byte{})
-	fmt.Println(out)
+	return getCode(args[0])
+}
+
+func main() {
+	evalExpr(readFromFile())
 }
