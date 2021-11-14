@@ -116,8 +116,8 @@ func evalExpr(code string) {
 func readFromFile() string {
 	args := os.Args[1:]
 	if len(args) == 0 {
-		fmt.Println("Emoji Language Interpreter")
-		fmt.Println("Usage: ./main <file>")
+		fmt.Println("mogee Interpreter")
+		fmt.Println("Usage: ./mogee <file>")
 		os.Exit(0)
 	}
 	return getCode(args[0])
