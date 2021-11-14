@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strings"
 	"unicode/utf8"
 )
 
@@ -19,9 +20,21 @@ func getCode(f string) string {
 	return string(fileBytes)
 }
 
+var funcStore = make(map[string]string)
+
+func trackFunc(code string, index int) int {
+	code = code[index+4:]
+	code = strings.Split(code, "👆")[0]
+	fID := code[:4]
+	fBody := code[4:]
+	funcStore[fID] = fBody
+	return len([]rune(code))
+}
+
 func evalExpr(code string, ptr uint, tape [tapeLen]byte) ([tapeLen]byte, uint) {
 	skipChars := 0
-	for _, char := range code {
+	callState := false
+	for index, char := range code {
 		if skipChars > 0 {
 			skipChars--
 		} else {
@@ -30,7 +43,7 @@ func evalExpr(code string, ptr uint, tape [tapeLen]byte) ([tapeLen]byte, uint) {
 			if size > 1 {
 				switch char {
 
-				// pointer movement
+				// pointer control
 				case "👈":
 					ptr--
 				case "👉":
@@ -78,6 +91,18 @@ func evalExpr(code string, ptr uint, tape [tapeLen]byte) ([tapeLen]byte, uint) {
 					os.Exit(0)
 				case "📼":
 					fmt.Println(tape)
+
+				// functions
+				case "👇":
+					skip := trackFunc(code, index)
+					skipChars = skip
+				case "📞":
+					callState = true
+				default:
+					if callState {
+						callState = false
+						tape, ptr = evalExpr(funcStore[char], ptr, tape)
+					}
 				}
 			}
 		}
@@ -93,5 +118,6 @@ func main() {
 		os.Exit(0)
 	}
 	code := getCode(args[0])
-	evalExpr(code, 0, [tapeLen]byte{})
+	out, _ := evalExpr(code, 0, [tapeLen]byte{})
+	fmt.Println(out)
 }

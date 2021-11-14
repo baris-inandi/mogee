@@ -24,14 +24,14 @@
 
 👇 <-- start function
 👆 <-- end function
-📞 <-- start function call
-🚩 <-- end function call
+📞 <-- call function
 
-
-👇🌍 <-- first emoji inside function block is the name of the function
-    🔟🔟👍 <-- followed by instructions
+👇🌍 <-- first emoji is the function keyword. It starts the function block.
+         the second emoji is the function name.
+    🔵👍 <-- followed by the body of the function.
+             These are the instructions that will be executed when the function is called.
 👆 <-- close the function block
 
-📞🌍📱 <-- this calls the 'world' function
+📞🌍 <-- calls the 'world' function
 
 all text are considered to be comments
