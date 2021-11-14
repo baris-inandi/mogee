@@ -1,4 +1,4 @@
-👉 <-- move pointer right
+👉 <-- move pointer right<br>
 👈 <-- move pointer left<br>
 🚘 <-- move pointer right 10 cells<br>
 🚗 <-- move pointer left 10 cells<br>
